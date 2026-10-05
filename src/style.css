@@ -1,0 +1,245 @@
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Personalizza il tema chiaro di daisyUI con i colori e gli arrotondamenti di DayByDay */
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-base-200: #efedec;
+  --color-base-300: #ddd8d6;
+  --color-primary: #cb6ce6;
+  --color-primary-content: #ffffff;
+  --radius-box: 32px;
+  --radius-field: 16px;
+  --radius-selector: 16px;
+}
+
+/* Colori del gradiente del logo, usabili come classi */
+@theme {
+  --color-blu-logo: #5170ff;
+  --color-rosa-logo: #ff66c4;
+  --color-lilla-chiaro: #f6eefa;
+  --color-lilla-bordo: #e6cff0;
+  --color-lilla-scuro: #6b2f80;
+}
+
+/* Bottoni della navbar: al passaggio del mouse diventano lilla */
+.navbar .btn:hover {
+  background-color: color-mix(in oklab, var(--color-primary) 15%, transparent);
+  color: var(--color-primary);
+}
+
+/* I bottoni con il bordo (es. Esci) prendono anche il bordo lilla */
+.navbar .btn-outline:hover {
+  border-color: var(--color-primary);
+}
+
+/* Sfondo dietro le finestre: più scuro e sfocato, così la pagina si vede meno */
+.modal[open] {
+  background-color: oklch(0% 0 0 / 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* FULLCALENDAR
+- Le regole iniziano con ".fc .fc-timegrid-body" o simili perché devono essere più forti
+   di quelle di FullCalendar, che aggiunge il suo CSS alla pagina dopo il mio */
+
+/* Colori dell'app; il giorno di oggi e l'ora attuale prendono il colore del calendario */
+.fc {
+  --fc-border-color: var(--color-base-300);
+  --fc-page-bg-color: var(--color-base-100);
+  --fc-neutral-bg-color: var(--color-base-200);
+  --fc-today-bg-color: color-mix(in oklab, var(--colore-calendario, var(--color-primary)) 10%, transparent);
+  --fc-now-indicator-color: var(--colore-calendario, var(--color-primary));
+}
+
+/* Nella vista giornaliera c'è un giorno solo: niente sfondo colorato per oggi
+   (resta nelle viste settimanale e mensile, dove serve a distinguerlo dagli altri) */
+.fc .fc-timeGridDay-view .fc-timegrid-col.fc-day-today,
+.fc .fc-timeGridDay-view .fc-daygrid-day.fc-day-today {
+  background-color: transparent;
+}
+
+/* Eventi delle viste con gli orari larghi quanto tutta la colonna */
+.fc .fc-timegrid-col-events {
+  margin: 0 2px;
+}
+
+/* Eventi: bordo pieno solo a sinistra, nel colore dell'evento */
+.fc .fc-timegrid-event,
+.fc .fc-daygrid-block-event {
+  border-width: 0 0 0 4px;
+  border-radius: 8px;
+}
+/* Titolo degli eventi in grassetto, per farli notare anche quando sono piccoli */
+.fc .fc-event-title {
+  font-weight: 600;
+}
+
+/* Numero del giorno di oggi dentro un cerchio del colore del calendario */
+.fc .fc-day-today .fc-daygrid-day-number {
+  background-color: var(--colore-calendario, var(--color-primary));
+  color: white;
+  border-radius: 9999px;
+  min-width: 28px;
+  text-align: center;
+}
+
+/* Orari a sinistra: piccoli, grigi e su una riga */
+.fc .fc-timegrid-slot-label-cushion {
+  font-size: 12px;
+  white-space: nowrap;
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+
+
+
+/* Vista mensile: orario e titolo su una riga; i titoli troppo lunghi finiscono con i puntini ("Riunione settimanale te…") */
+.fc .fc-daygrid-dot-event .fc-event-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Vista annuale: solo i pallini degli eventi, uno accanto all'altro, senza titolo */
+.fc .fc-multimonth .fc-daygrid-dot-event .fc-event-title {
+  display: none;
+}
+
+.fc .fc-multimonth .fc-daygrid-day-events {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 0 4px;
+}
+
+/* Vista annuale: giorni fuori dal mese con una tinta leggerissima del colore del calendario
+   (più leggera di quella di oggi, così oggi resta riconoscibile) */
+.fc .fc-multimonth .fc-day-disabled {
+  background-color: color-mix(in oklab, var(--colore-calendario, var(--color-primary)) 5%, transparent);
+}
+
+/* Riquadro che si apre con "+2" (annuale) o "+ altri" (mensile): stile delle finestre dell'app*/
+.fc .fc-popover.fc-more-popover {
+  border: 2px solid color-mix(in oklab, var(--colore-calendario, var(--color-primary)) 40%, transparent);
+  box-shadow: 0 10px 25px oklch(0% 0 0 / 0.15);
+}
+
+/* Striscia in alto con il giorno: colore del calendario chiaro, come le card */
+.fc .fc-popover.fc-more-popover .fc-popover-header {
+  background-color: color-mix(in oklab, var(--colore-calendario, var(--color-primary)) 10%, transparent);
+  padding: 8px 12px;
+}
+
+/* Giorno scritto come i titoletti dei gruppi: piccolo, maiuscolo, colore del calendario */
+.fc .fc-popover.fc-more-popover .fc-popover-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--colore-calendario, var(--color-primary));
+}
+
+/* ✕ come i bottoni tondi: icona nera, passando sopra anello e sfondo del colore del calendario */
+.fc .fc-popover.fc-more-popover .fc-popover-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  opacity: 1;
+  color: black;
+}
+
+.fc .fc-popover.fc-more-popover .fc-popover-close:hover {
+  background-color: color-mix(in oklab, var(--colore-calendario, var(--color-primary)) 10%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--colore-calendario, var(--color-primary)) 50%, transparent);
+}
+
+/* Un po' di spazio intorno agli eventi; con tanti eventi il riquadro non si allunga
+   oltre circa 8 righe: compare lo scroll dentro, il giorno e la ✕ restano in alto */
+.fc .fc-popover.fc-more-popover .fc-popover-body {
+  padding: 8px;
+  max-height: 256px;
+  overflow-y: auto;
+}
+
+/* "Tutto il giorno" per esteso su una riga */
+.fc .fc-timegrid-axis .fc-timegrid-axis-cushion {
+  max-width: none;
+  white-space: nowrap;
+  font-size: 12px;
+  color: color-mix(in oklab, var(--color-base-content) 60%, transparent);
+}
+
+/* Ora attuale: la linea parte dalla freccetta e arriva fino al giorno di oggi */
+.fc .fc-timegrid-body {
+  overflow: hidden; /* taglia la linea al bordo sinistro del calendario, dove c'è la freccetta */
+}
+
+.fc .fc-timegrid-body .fc-timegrid-now-indicator-container {
+  overflow: visible;
+}
+
+.fc .fc-timegrid-body .fc-timegrid-now-indicator-line {
+  border-top-width: 2px;
+}
+
+.fc .fc-timegrid-body .fc-timegrid-now-indicator-line::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: 100%;
+  width: 100vw;
+  border-top: 2px solid var(--fc-now-indicator-color);
+}
+
+/* Freccetta dell'ora attuale più grande */
+.fc .fc-timegrid-body .fc-timegrid-now-indicator-arrow {
+  border-width: 7px 0 7px 9px;
+  margin-top: -7px;
+}
+
+/* Fascia centrale del selettore degli orari: colore del calendario, o dell'app se non c'è */
+.fascia-selettore {
+      background-color: color-mix(in oklab, var(--colore-calendario, var(--color-primary)) 20%, transparent);
+}
+
+/* Tooltip con i colori dell'app: lilla chiaro, bordo lilla e testo viola scuro */
+.tooltip {
+  --tt-bg: var(--color-lilla-chiaro);
+}
+
+.tooltip[data-tip]::before {
+  color: var(--color-lilla-scuro);
+  border: 1px solid var(--color-lilla-bordo);
+}
+
+/* Tooltip sopra, ma allineato a sinistra: per il primo elemento di una fila, così il testo non esce dal bordo della finestra */
+.tooltip.tooltip-inizio[data-tip]::before {
+  left: 0;
+  --tt-trans: 0%;
+}
+
+/* Tooltip sopra, ma allineato a destra: per l'ultimo elemento di una fila */
+.tooltip.tooltip-fine[data-tip]::before {
+  left: auto;
+  right: 0;
+  --tt-trans: 0%;
+}
+
+
+/* Calendarietto (Cally): i giorni stanno dentro il componente, si raggiungono solo con ::part().
+   Oggi: anello del colore del calendario. Giorno scelto: cerchio pieno dello stesso colore
+   (come il numero di oggi nella vista mensile). Il giorno scelto viene dopo, così vince se è anche oggi */
+.cally ::part(today) {
+  background-color: transparent;
+  color: var(--colore-calendario, var(--color-primary));
+  box-shadow: inset 0 0 0 2px var(--colore-calendario, var(--color-primary));
+}
+
+.cally ::part(selected) {
+  background-color: var(--colore-calendario, var(--color-primary));
+  color: white;
+  box-shadow: none;
+}
