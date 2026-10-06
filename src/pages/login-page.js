@@ -84,6 +84,12 @@ export function paginaLogin() {
     contenitore.appendChild(titolo);
     contenitore.appendChild(card);
 
+    // Frase che presenta l'app, sotto la card, nei colori del logo
+    const presentazione = document.createElement('p');
+    presentazione.className = 'mt-12 text-center text-lg italic bg-linear-to-r from-blu-logo to-rosa-logo bg-clip-text text-transparent';
+    presentazione.textContent = 'Il tuo tempo, giorno per giorno: eventi, to do e note in un solo calendario, da soli o con chi vuoi.';
+    contenitore.appendChild(presentazione);
+
     // Cambio scheda
     function mostraSchedaAccedi() {
         erroreAccedi.textContent = '';
