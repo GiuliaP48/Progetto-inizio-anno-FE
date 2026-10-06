@@ -50,6 +50,15 @@ export function mostraToast(testo, tipo = 'errore', durata = DURATA_PREDEFINITA)
     span.textContent = testo;
     messaggio.appendChild(span);
 
+    // Il popup di una notifica porta alla pagina delle notifiche
+    if (tipo === 'notifica') {
+        messaggio.classList.add('cursor-pointer');
+        messaggio.addEventListener('click', () => {
+            messaggio.remove();
+            window.location.hash = '#/notifiche';
+        });
+    }
+    
     prendiContenitoreToast().appendChild(messaggio);
 
     // Dopo "durata" millisecondi, toglie il toast dalla pagina
