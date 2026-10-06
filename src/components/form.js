@@ -1,4 +1,7 @@
 
+import { Eye, EyeOff } from 'lucide';
+
+import { creaIcona } from './icona.js';
 
 // Pezzi condivisi dai form di tutte le pagine (login, calendari, eventi, ...)
 
@@ -100,4 +103,35 @@ export function aggiungiAreaTesto(form, id, testo) {
     form.appendChild(area);
 
     return area;
+}
+
+// Mette un occhio dentro un campo password, a destra: cliccandolo la password si vede o torna nascosta
+export function aggiungiOcchioPassword(campo) {
+    // Contenitore del campo e dell'occhio, che sta dentro il campo
+    const zona = document.createElement('div');
+    zona.className = 'relative';
+    campo.parentNode.insertBefore(zona, campo);
+    zona.appendChild(campo);
+
+    // Spazio a destra per l'occhio, così la password scritta non ci finisce sotto
+    campo.classList.add('pr-10');
+
+    const bottone = document.createElement('button');
+    bottone.type = 'button';
+    bottone.className = 'btn btn-ghost btn-sm btn-circle absolute right-1 top-1/2 -translate-y-1/2';
+
+    // Mostra o nasconde la password, cambiando l'icona (occhio aperto o barrato) e il testo letto ad alta voce a chi non vede
+    function mostra(visibile) {
+        campo.type = visibile ? 'text' : 'password';
+        bottone.replaceChildren(creaIcona(visibile ? Eye : EyeOff, 16));
+        bottone.setAttribute('aria-label', visibile ? 'Nascondi la password' : 'Mostra la password');
+    }
+
+    bottone.addEventListener('click', () => mostra(campo.type === 'password'));
+
+    // Quando il form si svuota, la password torna nascosta
+    campo.form?.addEventListener('reset', () => mostra(false));
+
+    mostra(false);
+    zona.appendChild(bottone);
 }

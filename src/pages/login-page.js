@@ -3,7 +3,7 @@ import { mostraToast } from '../components/messaggio_errore.js';
 
 import { accedi, registrati } from '../autenticazione.js';
 
-import { aggiungiCampo, creaTestoErrore, mostraErrore, creaBottoneInvio, impostaCaricamento } from '../components/form.js';
+import { aggiungiCampo, creaTestoErrore, mostraErrore, creaBottoneInvio, impostaCaricamento, aggiungiOcchioPassword } from '../components/form.js';
 
 import logo from '../assets/DaybyDay_Logo.png';
 
@@ -54,6 +54,7 @@ export function paginaLogin() {
 
     const inputEmailAccedi = aggiungiCampo(formAccedi, 'accedi-email', 'Email', 'email');
     const inputPasswordAccedi = aggiungiCampo(formAccedi, 'accedi-password', 'Password', 'password');
+    aggiungiOcchioPassword(inputPasswordAccedi);
     const erroreAccedi = creaTestoErrore();
     formAccedi.appendChild(erroreAccedi);
     const bottoneAccedi = creaBottoneInvio('Accedi');
@@ -69,6 +70,7 @@ export function paginaLogin() {
     const inputCognome = aggiungiCampo(formRegistrati, 'reg-cognome', 'Cognome', 'text');
     const inputEmailReg = aggiungiCampo(formRegistrati, 'reg-email', 'Email', 'email');
     const inputPasswordReg = aggiungiCampo(formRegistrati, 'reg-password', 'Password', 'password');
+    aggiungiOcchioPassword(inputPasswordReg);
     const erroreRegistrati = creaTestoErrore();
     formRegistrati.appendChild(erroreRegistrati);
     const bottoneRegistrati = creaBottoneInvio('Registrati');
@@ -135,6 +137,10 @@ export function paginaLogin() {
                 inputPasswordReg.value,
             );
             mostraToast('Registrazione completata! Ora puoi accedere', 'successo');
+            // Porto l'email nella scheda Accedi, così basta scrivere la password, e svuoto il form di registrazione
+            // (la password non deve restare scritta nella pagina)
+            inputEmailAccedi.value = inputEmailReg.value.trim();
+            formRegistrati.reset();
             mostraSchedaAccedi();
         } catch (errore) {
             // Il messaggio arriva dal backend (es. email già registrata)
