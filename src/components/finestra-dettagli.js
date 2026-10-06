@@ -98,10 +98,15 @@ function creaRigaElemento(elemento) {
     intestazione.appendChild(icona);
 
     // Il puntino c'è solo se l'elemento ha una priorità
+    // Senza priorità metto un puntino invisibile, che occupa lo stesso spazio: così i testi restano allineati
     if (PUNTINI_PRIORITA[elemento.priorita]) {
         const puntino = document.createElement('span');
         puntino.className = PUNTINI_PRIORITA[elemento.priorita];
         intestazione.appendChild(puntino);
+    } else {
+        const spazioPuntino = document.createElement('span');
+        spazioPuntino.className = 'size-2 shrink-0';
+        intestazione.appendChild(spazioPuntino);
     }
 
     const testo = document.createElement('span');

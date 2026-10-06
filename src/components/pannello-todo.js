@@ -419,6 +419,7 @@ function creaRigaElemento(elemento, possoModificare, dopoSpunta, conManiglia) {
     etichetta.appendChild(casella);
 
     // Il puntino c'è solo se l'elemento ha una priorità, con il fumetto dell'app che la dice
+    // Senza priorità metto un puntino invisibile, che occupa lo stesso spazio: così i testi restano allineati
     if (PUNTINI_PRIORITA[elemento.priorita]) {
         const puntino = document.createElement('span');
         puntino.className = PUNTINI_PRIORITA[elemento.priorita];
@@ -428,6 +429,10 @@ function creaRigaElemento(elemento, possoModificare, dopoSpunta, conManiglia) {
         tooltipPuntino.dataset.tip = `Priorità ${BADGE_PRIORITA[elemento.priorita].testo.toLowerCase()}`;
         tooltipPuntino.appendChild(puntino);
         etichetta.appendChild(tooltipPuntino);
+    } else {
+        const spazioPuntino = document.createElement('span');
+        spazioPuntino.className = 'size-2 shrink-0';
+        etichetta.appendChild(spazioPuntino);
     }
 
     etichetta.appendChild(contenitoreTesto);
