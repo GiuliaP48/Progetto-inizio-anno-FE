@@ -16,7 +16,7 @@ import { mostraToast } from '../components/messaggio_errore.js';
 import { creaFinestra } from '../components/finestra.js';
 import { creaFormEvento } from '../components/form-evento.js';
 import { apriDettagliEvento } from '../components/finestra-evento.js';
-import { creaPannelloTodo } from '../components/pannello-todo.js';
+import { creaPannelloTodo, BADGE_PRIORITA } from '../components/pannello-todo.js';
 import { creaFormTodo } from '../components/form-todo.js';
 import { creaPannelloNote } from '../components/pannello-note.js';
 import { creaFormNota } from '../components/form-nota.js';
@@ -504,8 +504,18 @@ export function paginaCalendario(calendarioId) {
             bottone.type = 'button';
             bottone.className = 'flex flex-col items-start gap-0';
 
+            // Titolo con il badge della priorità davanti, come nella colonna TO DO
             const titolo = document.createElement('span');
-            titolo.textContent = todo.titolo;
+            titolo.className = 'flex items-center gap-2';
+
+            if (BADGE_PRIORITA[todo.priorita]) {
+                const badge = document.createElement('span');
+                badge.className = BADGE_PRIORITA[todo.priorita].classi;
+                badge.textContent = BADGE_PRIORITA[todo.priorita].testo;
+                titolo.appendChild(badge);
+            }
+
+            titolo.append(todo.titolo);
 
             const dettagli = document.createElement('span');
             dettagli.className = 'text-xs text-base-content/60';
