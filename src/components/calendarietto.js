@@ -65,11 +65,13 @@ export function aggiungiCalendariettoAlCampo(campo) {
 
     const finestrella = document.createElement('div');
     // Bordo lilla dell'app, come il menu del "+": nei form il calendarietto è un popup della finestra
-    finestrella.className = 'absolute left-0 top-full z-30 mt-2 hidden rounded-box border-2 border-lilla-bordo bg-base-100 p-2 shadow-lg';
+    finestrella.className = 'absolute right-0 top-full z-30 mt-2 hidden rounded-box border-2 border-lilla-bordo bg-base-100 p-2 shadow-lg';
 
     // Chiude la finestrella, mentre è aperta si controllano i clic su tutta la pagina (per chiuderla
     // cliccando fuori): quando è chiusa quel controllo non serve più, e si toglie
     function chiudi() {
+        // Il form torna alla sua altezza
+        campo.form.style.paddingBottom = '';
         finestrella.classList.add('hidden');
         document.removeEventListener('click', chiudiFuori);
     }
@@ -97,6 +99,12 @@ export function aggiungiCalendariettoAlCampo(campo) {
         if (finestrella.classList.contains('hidden')) {
             calendarietto.mostra(campo.value, campo.max);
             finestrella.classList.remove('hidden');
+
+            // Se il calendarietto esce oltre la fine del form, aggiungo in fondo al form lo spazio che manca:
+            // così la finestra si allunga e il calendarietto si vede tutto
+            const spazioMancante = finestrella.getBoundingClientRect().bottom - campo.form.getBoundingClientRect().bottom;
+            if (spazioMancante > 0) campo.form.style.paddingBottom = `${spazioMancante}px`;
+            finestrella.scrollIntoView({ block: 'nearest' });
             document.addEventListener('click', chiudiFuori);
         } else {
             chiudi();
